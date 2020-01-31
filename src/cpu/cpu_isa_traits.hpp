@@ -88,9 +88,11 @@
  */
 #define JITFUNCS JITFUNCS_NONE
 
-#elif defined(JITFUNCS) && (JITFUNCS <= 0 || JITFUNCS == JITFUNCS_VANILLA) && !defined(TARGET_VANILLA)
+#elif defined(JITFUNCS)
+#if (JITFUNCS <= 0 || JITFUNCS == JITFUNCS_VANILLA) && !defined(TARGET_VANILLA)
 /** synonom for JITFUNCS <= 0 */
 #define TARGET_VANILLA
+#endif
 #endif
 
 #if defined(TARGET_VANILLA) && JITFUNCS != JITFUNCS_NONE && JITFUNCS != JITFUNCS_VANILLA /*&& JITFUNCS!=JITFUNCS_VE*/
@@ -301,11 +303,11 @@ namespace {
 	    }
 	}
 	if (l < cpuDataCacheLevels) {
-#if defined(__ve)
+#if !defined(__ve)
 	    return cpu.getDataCacheSize(l)
 		/ (per_core ? cpu.getCoresSharingDataCache(l) : 1);
 #else
-            size_t const cpuDataCacheSize = 16*1024*1024;
+        size_t const cpuDataCacheSize = 16*1024*1024;
 	    return cpuDataCacheSize
 		/ (per_core ? mkldnn_get_max_threads() : 1);
 #endif

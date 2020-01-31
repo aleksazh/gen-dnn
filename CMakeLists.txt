@@ -82,8 +82,10 @@ set(CMAKE_EXAMPLE_CCXX_FLAGS)   # EXAMPLE specifics
 set(CMAKE_TEST_CCXX_FLAGS)      # TESTS specifics
 
 if(UNIX OR MINGW)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    if(NOT NECVE)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    endif()
 endif()
 
 # Tentative remapping of old options to the new one.
@@ -156,4 +158,8 @@ if(MKLDNN_INSTALL_MODE STREQUAL "BUNDLE")
 else()
     # Cannot use CMAKE_INSTALL_DOCDIR since it uses PROJECT_NAME and not LIB_NAME
     install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/doc/${LIB_NAME})
+endif()
+
+if(NECVE) # toolchain debug
+    show_cmake_stuff("End of CMakeLists.txt")
 endif()

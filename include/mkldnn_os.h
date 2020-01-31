@@ -30,7 +30,8 @@
 #elif defined(__ve)
 // restrict is allowed
 #ifndef __restrict
-#define __restrict restrict /* ve/musl/include/stdlib.h uses __restrict !!! */
+//#define __restrict restrict /* ve/musl/include/stdlib.h uses __restrict !!! */
+#define __restrict /*remove for ncc 3.x ? */
 #endif
 
 #elif defined(__INTEL_COMPILER) || defined(__GNUC__)

@@ -50,8 +50,10 @@ while getopts ":hjgaSstvPdDqQTwWbF1567iMrCm:bBrR" arg; do
     #echo "arg = ${arg}, OPTIND = ${OPTIND}, OPTARG=${OPTARG}"
     case $arg in
         j) # force Intel x86 compile JIT (src/cpu/ JIT assembly code)
-            if [ ! "${DOTARGET}" == "x" ]; then echo "-j no good: already have -${DOTARGET}"; usage; fi
-            DOTARGET="j";
+            if [ "${DOTARGET}" == "a" ]; then VEJIT=100; else
+                if [ ! "${DOTARGET}" == "x" ]; then echo "-j no good: already have -${DOTARGET}"; usage; fi
+                DOTARGET="j";
+            fi
             ;;
         g) # force Intel x86 JIT compile for generic architecture
             if [ ! "${DOTARGET}" == "x" ]; then echo "-g no good: already have -${DOTARGET}"; usage; fi

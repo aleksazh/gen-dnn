@@ -36,7 +36,13 @@
 
 #if defined(__ve)
 // N/A      #include <stdatomic.h>
-#include <atomic> // avail ncc-2.3.20
+#if defined(__NEC_VERSION__) && __NEC_VERSION__ < 30000
+extern "C" {
+  #include <xatomic.h>
+}
+#else
+#include <atomic>
+#endif
 #endif
 
 namespace dnnl {
@@ -121,7 +127,12 @@ int32_t fetch_and_add(int32_t *dst, int32_t val) {
     return InterlockedExchangeAdd(reinterpret_cast<long *>(dst), val);
 #else
     // ve: N/A return atomic_fetch_add(dst, val);
+#if defined(__NEC_VERSION__) && __NEC_VERSION__ < 30000
+    // return __atomic_fetch_add(dst, val, std::memory_order_seq_cst);
+    return _Atomic_fetch_add_4(reinterpret_cast<volatile std::_Uint4_t*>(dst), val, std::memory_order_seq_cst);
+#else
     return __sync_fetch_and_add(dst, val); // compiles but undefined symbol for VE
+#endif
 #endif
 }
 

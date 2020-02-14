@@ -29,7 +29,7 @@
 #include "dnnl.hpp"
 #include "dnnl_debug.h"
 
-#if 1 // pause for gdb
+#if 0 // pause for gdb
 #include <stdio.h>
 static void inline myflush(FILE *in) {
 	int ch;

@@ -188,3 +188,18 @@ if(APPLE)
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${_rpath}")
     endforeach()
 endif()
+# Additional compiler checks
+include(CheckCXXSourceCompiles)
+check_cxx_source_compiles(
+    "#include <iostream>
+    struct Foo {
+        Foo() : i(42) {}
+        int i;
+    };
+    // Some systems fail to find the atexit routines for c++ destructors
+    static thread_local Foo foo;
+    int main(int argc,char**){ std::cout<<foo.i; }
+    "
+    DNNL_USE_STATIC_THREAD_LOCAL_OBJECTS # as in scratchpad std::unique_ptr
+    )
+

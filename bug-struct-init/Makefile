@@ -23,13 +23,13 @@ all: hello clang-7139 cxx-pod cxx-locals cxx_incomplete_value_init
 # construct, where T is a C POD type.
 #
 # Choose compiler + options
-ifeq (0,1)
+ifeq (1,1)
 CC:=ncc
 CXX:=nc++
 CFLAGS:=-O4 -minit-stack=0xbad4face
 CXXFLAGS:=$(CFLAGS)
 endif
-ifeq (1,1)
+ifeq (0,1)
 CC:=ncc
 CXX:=nc++
 CFLAGS:=-O4 -minit-stack=zero
@@ -79,6 +79,6 @@ cxx-locals-z: cxx-locals.cpp.z.o cxx-locals.c.z.o
 	./$@
 endif
 clean:
-	rm -f *.o
+	rm -f *.o *.i
 realclean: clean
-	rm -f clang-7139 cxx-pod cxx-locals cxx_incomplete_value_init
+	rm -f cxx-pod clang-7139 cxx-locals cxx_incomplete_value_init

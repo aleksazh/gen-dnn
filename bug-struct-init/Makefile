@@ -1,4 +1,4 @@
-all: hello clang-7139 cxx-pod cxx-locals cxx_incomplete_value_init
+all: hello clang-7139 cxx-pod cxx-locals cxx_incomplete_value_init smallbug
 #
 # Example usage:
 #     # select gcc compiler and run
@@ -23,7 +23,7 @@ all: hello clang-7139 cxx-pod cxx-locals cxx_incomplete_value_init
 # construct, where T is a C POD type.
 #
 # Choose compiler + options
-ifeq (1,1)
+ifeq (0,1)
 CC:=ncc
 CXX:=nc++
 CFLAGS:=-O4 -minit-stack=0xbad4face
@@ -36,12 +36,18 @@ CFLAGS:=-O4 -minit-stack=zero
 CXXFLAGS:=$(CFLAGS)
 endif
 ifeq (0,1)
-CC:=gcc
-CXX:=g++
-CFLAGS:=-O6 -Wall -Werror
+#VER:=-4.8
+#VER:=-4.9
+#VER:=-5
+VER:=-7
+CC:=gcc$(VER)
+CXX:=g++$(VER)
+CFLAGS:=-O2 -Wall -Werror -Wuninitialized
 CXXFLAGS:=$(CFLAGS)
 endif
-ifeq (0,1)
+ifeq (1,1)
+#VER:=
+VER:=-10
 CC:=clang
 CXX:=clang++
 CFLAGS:=-O3 -Wall -Werror
@@ -65,10 +71,13 @@ cxx-locals: cxx-locals.cpp.o cxx-locals.c.o
 	./$@
 cxx_incomplete_value_init: boost_no_com_value_init.cpp.o
 	$(CXX) -std=c++11 -Wall -o $(LDFLAGS) $@ $^
-	./$@
+	./$@ && echo PASSED TEST $@
 clang-7139: clang-7139.cpp.o
 	$(CXX) -std=c++11 -Wall -o $(LDFLAGS) $@ $^
 	./$@
+smallbug: smallbug.cpp.o
+	$(CXX) -std=c++11 -Wall -o $(LDFLAGS) $@ $^
+	./$@ && echo PASSED TEST $@
 ifeq ($(CC),ncc)
 %.cpp.z.o: %.cpp
 	$(CXX) -std=gnu++11 -Wall -O4 -minit-stack=zero -o $@ -c $<
@@ -81,4 +90,4 @@ endif
 clean:
 	rm -f *.o *.i
 realclean: clean
-	rm -f cxx-pod clang-7139 cxx-locals cxx_incomplete_value_init
+	rm -f cxx-pod clang-7139 cxx-locals cxx_incomplete_value_init smallbug

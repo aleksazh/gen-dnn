@@ -533,7 +533,7 @@ echo "PATH $PATH"
         CMAKEOPT="${CMAKEOPT} -D_MKLDNN_USE_MKL=ON"
     fi
     if [ "$DOTARGET" == "a" ]; then
-        TOOLCHAIN=../cmake/ve.cmake
+        TOOLCHAIN=../ve-cmake/ve.cmake
         if [ ! -f "${TOOLCHAIN}" ]; then echo "Ohoh. ${TOOLCHAIN} not found?"; BUILDOK="n"; fi
         CMAKEOPT="${CMAKEOPT} -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN}"
 

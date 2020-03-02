@@ -1,0 +1,3 @@
+[submodule "ve-cmake"]
+	path = ve-cmake
+	url = https://github.com/necla-ml/ve-cmake

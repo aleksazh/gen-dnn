@@ -122,8 +122,6 @@ include("cmake/cblas.cmake")
 #include("cmake/NLC.cmake")
 include("cmake/Doxygen.cmake")
 include("cmake/version.cmake")
-# XXX hack (debug function to print various cmake things)
-include("Platform/SX-util.cmake")
 include("cmake/coverage.cmake")
 
 # Handle cases when OpenMP runtime is requested but not found: override CPU
@@ -176,6 +174,3 @@ endif()
 # record some cmake variables in the build tree, for shell scripts
 configure_file(${CMAKE_SOURCE_DIR}/cmake/bash_help.inc.in
     ${PROJECT_BINARY_DIR}/bash_help.inc)
-if(NECVE) # toolchain debug
-    show_cmake_stuff("At end of CMakeLists.txt")
-endif()

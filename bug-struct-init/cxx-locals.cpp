@@ -1,4 +1,5 @@
-
+/** \file
+ * This only tests some extremely simple cases. */
 #include <stddef.h>
 
 extern "C" {
@@ -9,7 +10,9 @@ extern int clobberhash_impl(char const* const p, size_t const psz);
 extern "C" {
 struct A {
 	int a;
-	int pad[1023];
+    int z;
+	//int pad[1023];
+    //int pad[257];
 };
 struct B {
 	int B;
@@ -70,10 +73,17 @@ int main(int,char**){
     if(1){
         A a;
         B b;
+        SHOW(sizeof(A));
+        SHOW(sizeof(B));
+        SHOW(nz_bytes(&a));
+        // surprise: nc++ zeroed very simple cases where it does not strictly need to.
+        // (independent of -minit-zero=0xdeadbeef or zero setting).
+        // But this is not really an error :)
         CHECK(nz_bytes(&a) == sizeof(A))
-                <<" should b all-garbage with nc++ -minit-stack=0xdeadbeef"<<endl;
+                <<" MAY be indeterminate, but not required. "<<endl;
+        SHOW(nz_bytes(&b));
         CHECK(nz_bytes(&b) == sizeof(B))
-                <<" should b all-garbage with nc++ -minit-stack=0xdeadbeef"<<endl;
+                <<" MAY be indeterminate, but not required. "<<endl;
     }
 #endif
     if(1){
@@ -132,32 +142,38 @@ int main(int,char**){
     //
     if(1){ // nameless temporary T() is value-initialized (any C++)
         auto a = A();
-        CHECK(nz_bytes(&a) == 0)
-                <<"assign from nameless A() must be value-intiialized"<<endl;
         auto b =B();
+        SHOW(nz_bytes(&a));
+        SHOW(nz_bytes(&b));
+        CHECK(nz_bytes(&a) == 0) // nc++ -minit-stack=0xbad4face FAILURES
+                <<"assign from nameless A() must be value-initialized"<<endl;
         CHECK(nz_bytes(&b) == 0)
-                <<"assign from nameless A() must be value-intiialized"<<endl;
+                <<"assign from nameless A() must be value-initialized"<<endl;
         bogus += clobberhash(&a);
         bogus += clobberhash(&b);
     }
     // if CXX zeroes stack frame, repeating *might* be a stronger test...
     if(1){ // nameless temporary T() is value-initialized (any C++)
         auto a = A();
-        CHECK(nz_bytes(&a) == 0)
-                <<"assign from nameless A() must be value-intiialized"<<endl;
         auto b =B();
+        SHOW(nz_bytes(&a));
+        SHOW(nz_bytes(&b));
+        CHECK(nz_bytes(&a) == 0) // nc++ -minit-stack=0xbad4face FAILURES
+                <<"assign from nameless A() must be value-initialized"<<endl;
         CHECK(nz_bytes(&b) == 0)
-                <<"assign from nameless A() must be value-intiialized"<<endl;
+                <<"assign from nameless A() must be value-initialized"<<endl;
         bogus += clobberhash(&a);
         bogus += clobberhash(&b);
     }
     if(1){ // nameless temporary T{} is value-initialized (>= c++11)
         auto a = A{};   // aggregate-init N/A
-        CHECK(nz_bytes(&a) == 0)
-                <<"assign from nameless A() must be value-intiialized"<<endl;
         auto b =B{};
+        SHOW(nz_bytes(&a));
+        SHOW(nz_bytes(&b));
+        CHECK(nz_bytes(&a) == 0)
+                <<"assign from nameless A() must be value-initialized"<<endl;
         CHECK(nz_bytes(&b) == 0)
-                <<"assign from nameless A() must be value-intiialized"<<endl;
+                <<"assign from nameless A() must be value-initialized"<<endl;
     }
     cout<<"\nGoodbye -- bogus = "<<bogus<<endl;
 

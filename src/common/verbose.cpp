@@ -27,6 +27,7 @@
 #include "cpu/cpu_isa_traits.hpp" // for mayiuse
 #include "verbose.hpp"
 
+#if 0
 #include "batch_normalization_pd.hpp"
 #include "binary_pd.hpp"
 #include "concat_pd.hpp"
@@ -43,8 +44,9 @@
 #include "resampling_pd.hpp"
 #include "rnn_pd.hpp"
 #include "shuffle_pd.hpp"
-#include "softmax_pd.hpp"
 #include "sum_pd.hpp"
+#endif
+#include "softmax_pd.hpp"
 
 #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_OCL
 #include "gpu/ocl/verbose.hpp"
@@ -203,6 +205,7 @@ void clear_buf(char *buf, int &written) {
         CHECK_WRITTEN(buf, buf_len, l, written); \
     } while (0)
 
+#if 0
 // XXX: Outputs strings corresponding to memory formats used for data tensors.
 void format_prb_desc_str(
         char *str, int len, int &written, const memory_desc_t *md) {
@@ -224,6 +227,7 @@ void format_prb_desc_str(
     else
         DIM2STR(str, len, written, md);
 }
+#endif
 
 void attr2str(char *str, int len, int written, const primitive_attr_t *attr) {
     // scratchpad mode is not a part of has_default_values(). Check it first.
@@ -322,6 +326,7 @@ void attr2str(char *str, int len, int written, const primitive_attr_t *attr) {
     }
 }
 
+#if 0
 void flags2str(char *str, int len, int written, unsigned flags) {
     std::string s;
     if (flags & dnnl_use_global_stats) s += "G";
@@ -329,6 +334,7 @@ void flags2str(char *str, int len, int written, unsigned flags) {
     if (flags & dnnl_fuse_norm_relu) s += "R";
     DPRINT(str, len, written, "flags:%s", s.c_str());
 }
+#endif
 
 void verbose_templ(char *buffer, dnnl_engine_t engine,
         dnnl_primitive_kind_t prim_kind, const char *impl_str,
@@ -982,13 +988,14 @@ void pd_info_t::init(const primitive_desc_t *pd) {
     std::call_once(initialization_flag_, [&] {
         str_.resize(DNNL_VERBOSE_BUF_LEN, '\0');
 
-        using logsoftmax_pd_t = softmax_pd_t;
+       // using logsoftmax_pd_t = softmax_pd_t;
 #define CASE(kind) \
     case primitive_kind::kind: \
         init_info_##kind((const kind##_pd_t *)pd, &str_[0]); \
         break
 
         switch (pd->kind()) {
+#if 0
             CASE(batch_normalization);
             CASE(binary);
             CASE(concat);
@@ -1006,8 +1013,9 @@ void pd_info_t::init(const primitive_desc_t *pd) {
             CASE(resampling);
             CASE(rnn);
             CASE(shuffle);
-            CASE(softmax);
             CASE(sum);
+#endif
+            CASE(softmax);
             default: assert(!"unknown primitive kind");
         }
 #undef CASE

@@ -14,12 +14,28 @@
 # limitations under the License.
 #===============================================================================
 
+#file(GLOB_RECURSE SOURCES
+#    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+#    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
+#    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+#    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+#    )
 file(GLOB_RECURSE SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/memory.*
+    ${CMAKE_CURRENT_SOURCE_DIR}/memory_desc*
+    ${CMAKE_CURRENT_SOURCE_DIR}/memory_storage*
+    ${CMAKE_CURRENT_SOURCE_DIR}/memory_zero_pad*
+    ${CMAKE_CURRENT_SOURCE_DIR}/scratchpad*
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils*
+    ${CMAKE_CURRENT_SOURCE_DIR}/primitive*
+    ${CMAKE_CURRENT_SOURCE_DIR}/verbose*
+    ${CMAKE_CURRENT_SOURCE_DIR}/dnnl_debug*
+    ${CMAKE_CURRENT_SOURCE_DIR}/stream*
+    ${CMAKE_CURRENT_SOURCE_DIR}/engine*
+    ${CMAKE_CURRENT_SOURCE_DIR}/query*
+    ${CMAKE_CURRENT_SOURCE_DIR}/softmax*
     )
+message(STATUS "\nsources common:\n${SOURCES}\n")
 
 set(OBJ_LIB ${LIB_NAME}_common)
 add_library(${OBJ_LIB} OBJECT ${SOURCES})

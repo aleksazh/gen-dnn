@@ -14,21 +14,32 @@
 # limitations under the License.
 #===============================================================================
 
-file(GLOB_RECURSE SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    )
+#file(GLOB_RECURSE SOURCES
+#    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+#    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
+#    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+#    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+#    )
+#
+## vanilla-x86 and non-x86 targets should ignore all x86 jit files
+#if(NOT TARGET_X86_JIT)
+#    message(STATUS "no x86 JIT: removing all '.*jit.*' source code")
+#    message(STATUS "\nbegin:\n${SOURCES}\n")
+#    #list(FILTER SOURCES EXCLUDE REGEX ".*(jit|xbyak).*") # not in older cmake
+#    list_filter_exclude(SOURCES ".*(jit|xbyak).*") # equiv. as macro
+#    message(STATUS "\nend:\n${SOURCES}\n")
+#endif()
 
-# vanilla-x86 and non-x86 targets should ignore all x86 jit files
-if(NOT TARGET_X86_JIT)
-    message(STATUS "no x86 JIT: removing all '.*jit.*' source code")
-    message(STATUS "\nbegin:\n${SOURCES}\n")
-    #list(FILTER SOURCES EXCLUDE REGEX ".*(jit|xbyak).*") # not in older cmake
-    list_filter_exclude(SOURCES ".*(jit|xbyak).*") # equiv. as macro
-    message(STATUS "\nend:\n${SOURCES}\n")
-endif()
+# softmax branch
+file(GLOB SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/cpu_engine*
+    ${CMAKE_CURRENT_SOURCE_DIR}/ref_softmax*
+    ${CMAKE_CURRENT_SOURCE_DIR}/cpu_softmax*
+    ${CMAKE_CURRENT_SOURCE_DIR}/cpu_memory_storage*
+    ${CMAKE_CURRENT_SOURCE_DIR}/cpu_stream*
+    ${CMAKE_CURRENT_SOURCE_DIR}/cpu_isa_traits*
+    )
+message(STATUS "\nsources cpu:\n${SOURCES}\n")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 if(TARGET_X86_JIT)

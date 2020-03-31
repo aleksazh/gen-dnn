@@ -21,7 +21,8 @@ file(GLOB_RECURSE HEADERS
     )
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/common
+    #${CMAKE_CURRENT_SOURCE_DIR}/common
+    ${CMAKE_CURRENT_SOURCE_DIR}/common_softmax
     )
 
 if (DNNL_LIBRARY_TYPE STREQUAL "SHARED")
@@ -68,8 +69,10 @@ if(WIN32)
     endif()
 endif()
 
-add_subdirectory(common)
-add_subdirectory(cpu)
+#add_subdirectory(common)
+#add_subdirectory(cpu)
+add_subdirectory(common_softmax)
+add_subdirectory(cpu_softmax)
 
 if(NOT DNNL_GPU_RUNTIME STREQUAL "NONE")
     add_subdirectory(gpu)

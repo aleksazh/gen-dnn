@@ -18,8 +18,10 @@
 #include "type_helpers.hpp"
 #include "utils.hpp"
 
+#if 0
 #include "pooling_pd.hpp"
 #include "shuffle_pd.hpp"
+#endif
 
 #include "primitive_hashing.hpp"
 
@@ -49,6 +51,7 @@ void key_t::init_mds(const primitive_desc_t *pd) {
     // XXX: There is too much knowledge about in the internals...
 
     switch (primitive_kind_) {
+#if 0
         case primitive_kind::batch_normalization: {
             break;
         }
@@ -110,10 +113,11 @@ void key_t::init_mds(const primitive_desc_t *pd) {
             }
             break;
         }
-        case primitive_kind::softmax: {
+        case primitive_kind::sum: {
             break;
         }
-        case primitive_kind::sum: {
+#endif
+        case primitive_kind::softmax: {
             break;
         }
         default: assert(!"unknown primitive_kind");
@@ -130,6 +134,7 @@ bool key_t::operator==(const key_t &rhs) const {
     if (!ret) return false;
 
     switch (primitive_kind_) {
+#if 0
         // NOTE: make sure that op_descs for all primitives are compared below
         case primitive_kind::batch_normalization:
             ret = cast_and_compare<batch_normalization_desc_t>(
@@ -186,11 +191,12 @@ bool key_t::operator==(const key_t &rhs) const {
         case primitive_kind::shuffle:
             ret = cast_and_compare<shuffle_desc_t>(op_desc_, rhs.op_desc_);
             break;
-        case primitive_kind::softmax:
-            ret = cast_and_compare<softmax_desc_t>(op_desc_, rhs.op_desc_);
-            break;
         case primitive_kind::sum:
             ret = cast_and_compare<sum_desc_t>(op_desc_, rhs.op_desc_);
+            break;
+#endif
+        case primitive_kind::softmax:
+            ret = cast_and_compare<softmax_desc_t>(op_desc_, rhs.op_desc_);
             break;
         default: assert(!"unknown primitive_kind");
     }

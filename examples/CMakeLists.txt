@@ -35,7 +35,8 @@ include_directories(${PROJECT_SOURCE_DIR}/examples)
 
 set_if(UNIX LIBM m)
 
-file(GLOB_RECURSE sources *.cpp *.c)
+#file(GLOB_RECURSE sources *.cpp *.c)
+file(GLOB sources primitives/softmax.cpp)
 
 foreach(src ${sources})
     file(RELATIVE_PATH src_rel_path ${CMAKE_CURRENT_SOURCE_DIR} ${src})

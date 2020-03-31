@@ -779,7 +779,7 @@ if [ "$BUILDOK" == "y" ]; then # Install? Test?
         if [ $DOTEST -ge 2 ]; then
             echo "Testing ... test2"
             (
-                 echo "${ENV} ${TEST_ENV[@]} ARGS='-VV -E .*test_.*' ${TESTRUNNER} <commnad>";
+                 echo "${ENV} ${TEST_ENV[@]} ARGS='-VV -R .*test_.*' ${TESTRUNNER} <commnad>";
                  cd "${BUILDDIR}" && ${ENV} ${TEST_ENV[@]} ARGS='-VV -N' \
                      ${TESTRUNNER} make test \
                      && ${ENV} ARGS='-VV -R .*test_.*' ${TEST_ENV[@]} ${TESTRUNNER}  make test \

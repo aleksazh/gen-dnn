@@ -53,7 +53,8 @@ if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^(x86_64|AMD64.*|aarch64.*|AARCH64.*|arm64
     set(TARGET_X86 1) # shorthand
     set(DNNL_ISA_ANY ${DNNL_ISA_X86})
     set(DNNL_ISA_ALL ${DNNL_ISA_X86_ALL})
-elseif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aurora") # some cpus won't handle x86 jit
+#elseif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aurora") # some cpus won't handle x86 jit
+elseif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86") # some cpus won't handle x86 jit
     set(TARGET_X86 0)
     set(DNNL_CPU ${DNNL_CPU_VE})
     set(DNNL_ISA_ANY ${DNNL_ISA_VE})

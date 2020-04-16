@@ -78,9 +78,12 @@ class Builder:
 
     def get_cmake_cmd(self):
         cmd = ["emcmake", "cmake",
-               "-DCMAKE_BUILD_TYPE=Release",
-               #"-DCMAKE_TOOLCHAIN_FILE='%s'" % self.get_toolchain_file(),
-               "-DENABLE_EMSCRIPTEN=ON"
+               "-DCPU_ISA=VANILLA",
+               "-DDNNL_CPU_RUNTIME=SEQ",
+               "-DDNNL_BUILD_TESTS=OFF",
+               "-DDNNL_BUILD_EXAMPLES=OFF",
+               "-DDNNL_ENABLE_JIT_PROFILING=OFF",
+               "-DDNNL_ENABLE_MAX_CPU_ISA=OFF"
                ]
 
         if self.options.cmake_option:

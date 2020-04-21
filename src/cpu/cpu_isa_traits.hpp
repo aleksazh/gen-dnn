@@ -27,7 +27,7 @@
 
 #include "dnnl_thread.hpp"
 #include "utils.hpp"
-#include <cstdalign>
+//#include <cstdalign>
 
 #if defined(_WIN32) && !defined(__GNUC__)
 #define STRUCT_ALIGN(al, ...) __declspec(align(al)) struct __VA_ARGS__
